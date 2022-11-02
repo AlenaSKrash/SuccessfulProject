@@ -82,4 +82,38 @@ public class ProjectTest {
         Assertions.assertEquals(200L, jsonObject.get("status"));
     }
 
+    @Test
+    @DisplayName("Status code")
+    public void testInvalidCode(){
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.postcodes.io/postcodes/EC90Y5AS"))
+                .setHeader("Content-type", "application/json")
+                .build();
+
+        try {
+            httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(404, httpResponse.statusCode());
+    }
+
+    @Test
+    @DisplayName("Empty code")
+    public void testEmptyCode(){
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.postcodes.io/postcodes/"))
+                .setHeader("Content-type", "application/json")
+                .build();
+
+        try {
+            httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(400, httpResponse.statusCode());
+    }
+
 }
