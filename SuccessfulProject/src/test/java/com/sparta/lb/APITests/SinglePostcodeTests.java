@@ -76,5 +76,36 @@ public class SinglePostcodeTests {
         Assertions.assertEquals(200L, jsonObject.get("status"));
     }
 
+    @Test
+    @DisplayName("URI Test invalid postcode")
+    public void testResponseStatusFailCode() {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.postcodes.io/postcodes/fsvf"))
+                .setHeader("Content-type", "application/json")
+                .build();
+        try {
+            httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(404, httpResponse.statusCode());
+    }
+
+    @Test
+    @DisplayName("URI Test no postcode")
+    public void testResponseStatusEmptyCode() {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.postcodes.io/postcodes/"))
+                .setHeader("Content-type", "application/json")
+                .build();
+        try {
+            httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(400, httpResponse.statusCode());
+    }
 }
 
