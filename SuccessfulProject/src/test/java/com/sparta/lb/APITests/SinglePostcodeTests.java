@@ -107,5 +107,39 @@ public class SinglePostcodeTests {
         }
         Assertions.assertEquals(400, httpResponse.statusCode());
     }
+
+    @Test
+    @DisplayName("URI Test valid postcode")
+    public void testValidateValidPostcode() {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.postcodes.io/postcodes/CO28GQ/validate"))
+                .setHeader("Content-type", "application/json")
+                .build();
+        try {
+            httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(200, httpResponse.statusCode());
+        Assertions.assertTrue(true);
+    }
+
+    @Test
+    @DisplayName("URI Test valid postcode")
+    public void testValidateInvalidPostcode() {
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.postcodes.io/postcodes/CO28/validate"))
+                .setHeader("Content-type", "application/json")
+                .build();
+        try {
+            httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(200, httpResponse.statusCode());
+        Assertions.assertFalse(false);
+    }
 }
 
