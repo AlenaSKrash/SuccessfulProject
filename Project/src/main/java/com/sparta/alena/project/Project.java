@@ -42,7 +42,7 @@ public class Project {
         JSONParser jsonParser = new JSONParser();
         try {
             JSONObject jsonObject = (JSONObject)jsonParser.parse(httpResponse.body());
-            System.out.println(jsonObject.get("status"));
+            System.out.println(((JSONObject)jsonObject.get("server")).values());
         }
         catch (ParseException e) {
             e.printStackTrace();
