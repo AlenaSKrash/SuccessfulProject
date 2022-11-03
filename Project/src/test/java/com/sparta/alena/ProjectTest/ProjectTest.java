@@ -1,5 +1,6 @@
 package com.sparta.alena.ProjectTest;
 
+import io.restassured.http.ContentType;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -15,6 +16,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
+
+import static io.restassured.RestAssured.given;
 
 public class ProjectTest {
 
@@ -115,5 +118,35 @@ public class ProjectTest {
         }
         Assertions.assertEquals(400, httpResponse.statusCode());
     }
+
+
+
+    @Test
+    @DisplayName("If postcode is valid")
+    public void isPostcodeValid(){
+        Map<Data, List<String>> data = given().
+                when()
+                .contentType(ContentType.JSON)
+                .get("https://api.postcodes.io/postcodes/CH614UY")
+                .then().log().all()
+                .extract().body().jsonPath().getMap();
+
+    }
+
+//    @Test
+//    @DisplayName("IfCodeValid")
+//    public void testIfValidCode(){
+//        HttpClient httpClient = HttpClient.newBuilder().build();
+//        HttpRequest httpRequest = HttpRequest.newBuilder()
+//                .uri(URI.create("https://api.postcodes.io/postcodes/CH614UY"))
+//                .setHeader("Content-type", "application/json")
+//                .build();
+//
+//        try {
+//            httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+//        } catch (IOException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        Assertions.assertTrue(true, httpResponse.statusCode());
 
 }
